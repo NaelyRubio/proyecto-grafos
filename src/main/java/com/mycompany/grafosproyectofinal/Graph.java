@@ -26,6 +26,28 @@ public class Graph {
         grafo.put(ciudad, new ArrayList<>());
     }
 
+    public void imprimirCiudadesRegistradas() {
+        System.out.println("Ciudades registradas:");
+        for (Ciudad ciudad : grafo.keySet()) {
+            System.out.println(ciudad.getNombre());
+        }
+    }
+
+    public void imprimirColindanciasRegistradas() {
+        System.out.println("Colindancias registradas:");
+        for (Map.Entry<Ciudad, List<Colindancia>> entry : grafo.entrySet()) {
+            Ciudad ciudadOrigen = entry.getKey();
+            List<Colindancia> colindancias = entry.getValue();
+            System.out.println("Ciudad: " + ciudadOrigen.getNombre());
+            for (Colindancia colindancia : colindancias) {
+                Ciudad ciudadDestino = colindancia.getCiudadDestino();
+                int distancia = colindancia.getDistancia();
+                int costo = colindancia.getCosto();
+                System.out.println("- Ciudad destino: " + ciudadDestino.getNombre() + ", Distancia: " + distancia + ", Costo: " + costo);
+            }
+        }
+    }
+
     //Mwrodo agregar colindancia que permite agregar una colindancia entre dos ciudades existenres el grafo
     public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino) {
         List<Colindancia> colindancias = grafo.getOrDefault(ciudadOrigen, new ArrayList<>());
@@ -222,7 +244,7 @@ public class Graph {
             this.ciudadDestino = ciudadDestino;
             this.distancia = distancia;
         }
-        
+
         public Colindancia(Ciudad ciudadDestino) {
             this.ciudadDestino = ciudadDestino;
         }
@@ -253,11 +275,11 @@ public class Graph {
         public int getCosto() {
             return costo;
         }
-        
+
         public void setDistancia(int distancia) {
             this.distancia = distancia;
         }
-        
+
         public void setCosto(int costo) {
             this.costo = costo;
         }

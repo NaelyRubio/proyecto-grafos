@@ -177,6 +177,13 @@ public class Main {
                     }
                     break;
                 case 7:
+                    System.out.println("7) Imprimir todas las ciudades registradas.");
+                    grafo.imprimirCiudadesRegistradas();
+                    break;
+                case 8:
+                    System.out.println("8) Imprimir todas las colindancias registradas.");
+                    grafo.imprimirColindanciasRegistradas();
+                case 9:
                     System.out.println("7) Salir del sistema");
                     opcion++;
                     break;
