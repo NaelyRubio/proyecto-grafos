@@ -76,6 +76,10 @@ public class Main {
     private List<Ciudad> calcularDistanciaMasCorta(int indiceUno, int indiceDos) {
         return grafo.calcularRutaMasCortaBellmanFord(ciudades[indiceUno], ciudades[indiceDos]);
     }
+    
+    private List<Ciudad> calcularDistanciaMasBarata(int indiceUno, int indiceDos) {
+        return grafo.calcularRutaMasBarataBellmanFord(ciudades[indiceUno], ciudades[indiceDos]);
+    }
 
     private void mostrarMenuOpciones() {
         int opcion = 0;
@@ -123,8 +127,15 @@ public class Main {
                     System.out.println("4) Modificar distancia y costo de pasaje entre dos ciudades colindantes");
                     break;
                 case 5:
-                   System.out.println("5) Consultar ruta mas corta entre dos ciudades");
-                
+                    System.out.println("5) Consultar ruta mas corta entre dos ciudades");
+                    System.out.println("Ingrese el indice de la ciudad 1.");
+                    opcionUno = sc.nextInt();
+                    System.out.println("Ingrese el indice de la ciudad 2.");
+                    opcionDos = sc.nextInt();
+                    List<Ciudad> rutaMasCorta = calcularDistanciaMasCorta(opcionUno, opcionDos);
+                    for (Ciudad ciudad : rutaMasCorta) {
+                        System.out.println(ciudad.getNombre());
+                    }
                     break;
                 case 6:
                     System.out.println("6) Consultar ruta mas barata entre dos ciudades");
@@ -132,8 +143,8 @@ public class Main {
                     opcionUno = sc.nextInt();
                     System.out.println("Ingrese el indice de la ciudad 2.");
                     opcionDos = sc.nextInt();
-                    List<Ciudad> rutaMasCorta =calcularDistanciaMasCorta(opcionUno, opcionDos);
-                    for (Ciudad ciudad : rutaMasCorta) {
+                    List<Ciudad> rutaMasBarata = calcularDistanciaMasBarata(opcionUno, opcionDos);
+                    for (Ciudad ciudad : rutaMasBarata) {
                         System.out.println(ciudad.getNombre());
                     }
                     break;

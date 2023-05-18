@@ -112,6 +112,53 @@ public class Graph {
         return rutaMasCorta;
     }
 
+    public List<Ciudad> calcularRutaMasBarataBellmanFord(Ciudad ciudadOrigen, Ciudad ciudadDestino) {
+        Map<Ciudad, Integer> costos = new HashMap<>();
+        Map<Ciudad, Ciudad> rutasPrevias = new HashMap<>();
+
+        // Inicializar costos
+        for (Ciudad ciudad : grafo.keySet()) {
+            if (ciudad.equals(ciudadOrigen)) {
+                costos.put(ciudad, 0);
+            } else {
+                costos.put(ciudad, Integer.MAX_VALUE);
+            }
+        }
+
+        // Relajación de aristas
+        for (int i = 0; i < grafo.size() - 1; i++) {
+            for (Map.Entry<Ciudad, List<Colindancia>> entry : grafo.entrySet()) {
+                Ciudad ciudad = entry.getKey();
+                List<Colindancia> colindancias = entry.getValue();
+                if (colindancias != null) {
+                    for (Colindancia colindancia : colindancias) {
+                        ciudadDestino = colindancia.getCiudadDestino();
+                        Integer costoActual = costos.get(ciudad);
+                        Integer costoDestino = costos.get(ciudadDestino);
+                        if (costoActual != null && costoDestino != null) {
+                            int costoNuevo = costoActual.intValue() + colindancia.getCosto();
+                            if (costoNuevo < costoDestino.intValue()) {
+                                costos.put(ciudadDestino, costoNuevo);
+                                rutasPrevias.put(ciudadDestino, ciudad);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Construir la ruta más barata
+        List<Ciudad> rutaMasBarata = new ArrayList<>();
+        Ciudad ciudadActual = ciudadDestino;
+
+        while (ciudadActual != null) {
+            rutaMasBarata.add(0, ciudadActual);
+            ciudadActual = rutasPrevias.get(ciudadActual);
+        }
+
+        return rutaMasBarata;
+    }
+
     //Metodo obtenerColindanciaDeCiudades devuelve una lista de objetos colindancia. 
     public List<Colindancia> obtenerColindanciasDeCiudades() {
         List<Colindancia> listaColindancias = new ArrayList<>();
@@ -138,7 +185,7 @@ public class Graph {
             this.distancia = distancia;
             this.costo = costo;
         }
-        
+
         public Colindancia(Ciudad ciudadDestino, int distancia) {
             this.ciudadDestino = ciudadDestino;
             this.distancia = distancia;
