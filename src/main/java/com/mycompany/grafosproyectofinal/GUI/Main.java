@@ -134,12 +134,9 @@ public class Main {
                     System.out.println("Consultar ruta mas barata entre dos ciudades");
                     break;
                 case 5:
-<<<<<<< Updated upstream
-                    System.out.println("Mostrar tabla de ciudades");
-=======
+                   System.out.println("Mostrar tabla de ciudades");
                     System.out.println("Consultar ruta mas corta entre dos ciudades ");
                 
->>>>>>> Stashed changes
                     break;
                 case 6:
                     System.out.println("Salir del sistema");

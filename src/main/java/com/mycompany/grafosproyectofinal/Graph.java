@@ -6,24 +6,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase que representa un grafo que costa de ciudades y sus cardinalidades.
+ * @author Guimel Naely Rubio Morillon - 229324 
+ */
 public class Graph {
 
+   //Mapa que mapea instancias de la clase ciudad a las listas de colindancias
     private Map<Ciudad, List<Colindancia>> grafo;
 
+    //Constructor graph que inicializa el mapa grafo como una nueva instancoa HashMap
     public Graph() {
         grafo = new HashMap<>();
     }
 
+    //Metodo agregarCiudad que toma como instancia la clase ciudad como parametro y agrega una entrada al mapa grafo
     public void agregarCiudad(Ciudad ciudad) {
         grafo.put(ciudad, new ArrayList<>());
     }
 
+    //Mwrodo agregar colindancia que permite agregar una colindancia entre dos ciudades existenres el grafo
     public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia, int costo) {
         List<Colindancia> colindancias = grafo.getOrDefault(ciudadOrigen, new ArrayList<>());
         colindancias.add(new Colindancia(ciudadDestino, distancia, costo));
         grafo.put(ciudadOrigen, colindancias);
     }
 
+    //Metodo obtener distancia que permite obteher la distancia entre dos ciudades en el grafo. 
     public int obtenerDistancia(Ciudad ciudadOrigen, Ciudad ciudadDestino) {
         List<Colindancia> colindancias = grafo.get(ciudadOrigen);
         if (colindancias != null) {
@@ -94,6 +103,7 @@ public class Graph {
         return rutaMasCorta;
     }
 
+    //Metodo obtenerColindanciaDeCiudades devuelve una lista de objetos colindancia. 
     public List<Colindancia> obtenerColindanciasDeCiudades() {
         List<Colindancia> listaColindancias = new ArrayList<>();
 
@@ -104,26 +114,43 @@ public class Graph {
         return listaColindancias;
     }
 
+    //clase interna colindancia.
     private class Colindancia {
 
+        //Atributos privados de la clase
         private Ciudad ciudadDestino;
         private int distancia;
         private int costo;
 
+        //Constructor que recibe una instancia ciudad, la distancia y el costo y 
+        //asigna valores a los atributos correspondientes.
         public Colindancia(Ciudad ciudadDestino, int distancia, int costo) {
             this.ciudadDestino = ciudadDestino;
             this.distancia = distancia;
             this.costo = costo;
         }
 
+      
+        /**
+         * Metodo para obetener distancia
+         * @return  ciudadDestino
+         */
         public Ciudad getCiudadDestino() {
             return ciudadDestino;
         }
 
+        /**
+         * Metodo para obtener distancia
+         * @return disancia
+         */
         public int getDistancia() {
             return distancia;
         }
 
+        /**
+         * metodo para obtener el costo
+         * @return costo
+         */
         public int getCosto() {
             return costo;
         }
