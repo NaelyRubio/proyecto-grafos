@@ -7,7 +7,7 @@ package com.mycompany.grafosproyectofinal.folder;
 import java.util.Objects;
 
 /**
- *
+ * Representa una ciudad.
  * @author naely
  */
 public class Ciudad {
