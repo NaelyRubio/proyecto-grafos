@@ -2,11 +2,9 @@ package com.mycompany.grafosproyectofinal;
 
 import com.mycompany.grafosproyectofinal.folder.Ciudad;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 public class Graph {
 
@@ -20,9 +18,9 @@ public class Graph {
         grafo.put(ciudad, new ArrayList<>());
     }
 
-    public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia) {
+    public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia, int costo) {
         List<Colindancia> colindancias = grafo.getOrDefault(ciudadOrigen, new ArrayList<>());
-        colindancias.add(new Colindancia(ciudadDestino, distancia));
+        colindancias.add(new Colindancia(ciudadDestino, distancia, costo));
         grafo.put(ciudadOrigen, colindancias);
     }
 
@@ -38,10 +36,9 @@ public class Graph {
         return -1; // Si no hay conexión directa entre las ciudades
     }
 
-    public List<Ciudad> calcularRutaMasCorta(Ciudad ciudadOrigen, Ciudad ciudadDestino) {
+    public List<Ciudad> calcularRutaMasCortaBellmanFord(Ciudad ciudadOrigen, Ciudad ciudadDestino) {
         Map<Ciudad, Integer> distancias = new HashMap<>();
         Map<Ciudad, Ciudad> rutasPrevias = new HashMap<>();
-        PriorityQueue<Colindancia> colaPrioridad = new PriorityQueue<>(Comparator.comparingInt(Colindancia::getDistancia));
 
         // Inicializar distancias
         for (Ciudad ciudad : grafo.keySet()) {
@@ -52,29 +49,40 @@ public class Graph {
             }
         }
 
-        colaPrioridad.offer(new Colindancia(ciudadOrigen, 0));
-
-        while (!colaPrioridad.isEmpty()) {
-            Colindancia colindanciaActual = colaPrioridad.poll();
-            Ciudad ciudadActual = colindanciaActual.getCiudadDestino();
-
-            if (distancias.get(ciudadActual) < colindanciaActual.getDistancia()) {
-                continue;
-            }
-
-            List<Colindancia> colindancias = grafo.get(ciudadActual);
-            if (colindancias != null) {
-                for (Colindancia colindancia : colindancias) {
-                    int distanciaNueva = distancias.get(ciudadActual) + colindancia.getDistancia();
-                    if (distanciaNueva < distancias.get(colindancia.getCiudadDestino())) {
-                        distancias.put(colindancia.getCiudadDestino(), distanciaNueva);
-                        rutasPrevias.put(colindancia.getCiudadDestino(), ciudadActual);
-                        colaPrioridad.offer(new Colindancia(colindancia.getCiudadDestino(), distanciaNueva));
+        // Relajación de aristas
+        for (int i = 0; i < grafo.size() - 1; i++) {
+            for (Map.Entry<Ciudad, List<Colindancia>> entry : grafo.entrySet()) {
+                Ciudad ciudad = entry.getKey();
+                List<Colindancia> colindancias = entry.getValue();
+                if (colindancias != null) {
+                    for (Colindancia colindancia : colindancias) {
+                        ciudadDestino = colindancia.getCiudadDestino();
+                        int distanciaNueva = distancias.get(ciudad) + colindancia.getDistancia();
+                        if (distanciaNueva < distancias.get(ciudadDestino)) {
+                            distancias.put(ciudadDestino, distanciaNueva);
+                            rutasPrevias.put(ciudadDestino, ciudad);
+                        }
                     }
                 }
             }
         }
 
+        // Detectar ciclos negativos
+        for (Map.Entry<Ciudad, List<Colindancia>> entry : grafo.entrySet()) {
+            Ciudad ciudad = entry.getKey();
+            List<Colindancia> colindancias = entry.getValue();
+            if (colindancias != null) {
+                for (Colindancia colindancia : colindancias) {
+                    ciudadDestino = colindancia.getCiudadDestino();
+                    int distanciaNueva = distancias.get(ciudad) + colindancia.getDistancia();
+                    if (distanciaNueva < distancias.get(ciudadDestino)) {
+                        throw new RuntimeException("El grafo contiene un ciclo negativo.");
+                    }
+                }
+            }
+        }
+
+        // Construir la ruta más corta
         List<Ciudad> rutaMasCorta = new ArrayList<>();
         Ciudad ciudadActual = ciudadDestino;
 
@@ -96,14 +104,16 @@ public class Graph {
         return listaColindancias;
     }
 
-    private static class Colindancia {
+    private class Colindancia {
 
         private Ciudad ciudadDestino;
         private int distancia;
+        private int costo;
 
-        public Colindancia(Ciudad ciudadDestino, int distancia) {
+        public Colindancia(Ciudad ciudadDestino, int distancia, int costo) {
             this.ciudadDestino = ciudadDestino;
             this.distancia = distancia;
+            this.costo = costo;
         }
 
         public Ciudad getCiudadDestino() {
@@ -113,5 +123,10 @@ public class Graph {
         public int getDistancia() {
             return distancia;
         }
+
+        public int getCosto() {
+            return costo;
+        }
     }
+
 }

@@ -6,7 +6,7 @@ package com.mycompany.grafosproyectofinal.GUI;
 
 import com.mycompany.grafosproyectofinal.Graph;
 import com.mycompany.grafosproyectofinal.folder.Ciudad;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -40,40 +40,6 @@ public class Main {
         Main main = new Main();
 
         main.mostrarMenuOpciones();
-
-        // Agregar conexiones (distancias) entre ciudades
-        grafo.agregarCiudad(obregon);
-        grafo.agregarCiudad(guaymas);
-        grafo.agregarCiudad(empalme);
-        grafo.agregarCiudad(hermosillo);
-        grafo.agregarCiudad(navojoa);
-        grafo.agregarCiudad(huatabampo);
-        grafo.agregarCiudad(alamos);
-        grafo.agregarCiudad(yecora);
-        grafo.agregarCiudad(santaAna);
-        grafo.agregarCiudad(magdalena);
-        grafo.agregarCiudad(nogales);
-        grafo.agregarCiudad(cananea);
-        grafo.agregarCiudad(aguaPrieta);
-        grafo.agregarCiudad(puertoPenasco);
-        grafo.agregarCiudad(sanLuisRC);
-        grafo.agregarColindancia(obregon, navojoa, 67);
-        grafo.agregarColindancia(obregon, empalme, 119);
-        grafo.agregarColindancia(empalme, guaymas, 12);
-        grafo.agregarColindancia(guaymas, hermosillo, 134);
-        grafo.agregarColindancia(hermosillo, santaAna, 171);
-        grafo.agregarColindancia(santaAna, magdalena, 18);
-        grafo.agregarColindancia(santaAna, puertoPenasco, 284);
-        grafo.agregarColindancia(puertoPenasco, sanLuisRC, 238);
-        grafo.agregarColindancia(magdalena, nogales, 87);
-        grafo.agregarColindancia(nogales, cananea, 96);
-        grafo.agregarColindancia(magdalena, cananea, 111);
-        grafo.agregarColindancia(cananea, aguaPrieta, 85);
-        grafo.agregarColindancia(hermosillo, yecora, 278);
-        grafo.agregarColindancia(obregon, yecora, 215);
-        grafo.agregarColindancia(navojoa, huatabampo, 37);
-        grafo.agregarColindancia(navojoa, alamos, 52);
-
     }
 
     private static void mostrarTablaCiudades() {
@@ -98,23 +64,24 @@ public class Main {
             System.out.println("*----------------------------------*");
         }
     }
-    
-    private void mostrarTablaColindancias() {
-        grafo.c
-    }
 
     private void agregarCiudad(int indice) {
         grafo.agregarCiudad(ciudades[indice]);
         System.out.println("Se agrego la ciudad " + ciudades[indice].getNombre());
     }
     
-    private void agregarColindancia(int indiceUno, int indiceDos, int distancia) {
-        grafo.agregarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia);
+    private void agregarColindancia(int indiceUno, int indiceDos, int distancia, int costo) {
+        grafo.agregarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia, costo);
+    }
+    
+    private List<Ciudad> calcularDistanciaMasCorta(int indiceUno, int indiceDos) {
+        return grafo.calcularRutaMasCortaBellmanFord(ciudades[indiceUno], ciudades[indiceDos]);
     }
 
     private void mostrarMenuOpciones() {
         int opcion = 0;
         int opcionSeleccionada = 0;
+        int opcionUno = 0, opcionDos = 0;
         
         do {
             System.out.println("*---------------------------------------------------------------------*");
@@ -143,34 +110,33 @@ public class Main {
                     System.out.println("Registrar una colindancia entre dos ciudades");
                     mostrarTablaCiudades();
                     System.out.println("Ingrese el indice de la primera ciudad:");
-                    int opcionUno = sc.nextInt() - 1;
+                    opcionUno = sc.nextInt() - 1;
                     System.out.println("Ingrese el indice de la segunda ciudad:");
-                    int opcionDos = sc.nextInt();
+                    opcionDos = sc.nextInt();
                     System.out.println("Ingrese la distancia entre ciudad 1 y ciudad 2:");
                     int distancia = sc.nextInt();
-                    agregarColindancia(opcionUno, opcionDos, distancia);
+                    System.out.println("Ingrese el costo entre la ciudad 1 y la ciudad 2:");
+                    int costo = sc.nextInt();
+                    agregarColindancia(opcionUno, opcionDos, distancia, costo);
                     break;
                 case 3:
-                    System.out.println("Registrar distancia y costo de pasaje entre dos ciudades colindantes");
+                    System.out.println("Consultar ruta mas corta entre dos ciudades ");
+                    System.out.println("Ingrese el indice de la ciudad 1.");
+                    opcionUno = sc.nextInt();
+                    System.out.println("Ingrese el indice de la ciudad 2.");
+                    opcionDos = sc.nextInt();
+                    List<Ciudad> rutaMasCorta =calcularDistanciaMasCorta(opcionUno, opcionDos);
+                    for (Ciudad ciudad : rutaMasCorta) {
+                        System.out.println(ciudad.getNombre());
+                    }
                     break;
                 case 4:
-                    System.out.println("Registrar distancia y costo de pasaje entre dos ciudades colindantes");
-                    break;
-                case 5:
-                    System.out.println("Consultar ruta mas corta entre dos ciudades ");
-                
-                
-                    break;
-                case 6:
                     System.out.println("Consultar ruta mas barata entre dos ciudades");
                     break;
-                case 7:
+                case 5:
                     System.out.println("Mostrar tabla de ciudades");
                     break;
-                case 8:
-                    System.out.println("Mostrar tabla de colindancias");
-                    break;
-                case 9:
+                case 6:
                     System.out.println("Salir del sistema");
                     opcion++;
                     break;
