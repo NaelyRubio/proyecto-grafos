@@ -27,10 +27,42 @@ public class Graph {
     }
 
     //Mwrodo agregar colindancia que permite agregar una colindancia entre dos ciudades existenres el grafo
-    public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia) {
+    public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino) {
         List<Colindancia> colindancias = grafo.getOrDefault(ciudadOrigen, new ArrayList<>());
-        colindancias.add(new Colindancia(ciudadDestino, distancia));
+        colindancias.add(new Colindancia(ciudadDestino));
         grafo.put(ciudadOrigen, colindancias);
+    }
+
+    public void registrarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia, int costo) {
+        // Verificar si la ciudad de origen ya existe en el grafo
+        if (!grafo.containsKey(ciudadOrigen)) {
+            grafo.put(ciudadOrigen, new ArrayList<>());
+        }
+
+        // Crear la colindancia y agregarla a la lista de colindancias de la ciudad de origen
+        Colindancia colindancia = new Colindancia(ciudadDestino, distancia, costo);
+        List<Colindancia> colindancias = grafo.get(ciudadOrigen);
+        colindancias.add(colindancia);
+    }
+
+    public void modificarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int nuevaDistancia, int nuevoCosto) {
+        // Verificar si la ciudad de origen existe en el grafo
+        if (grafo.containsKey(ciudadOrigen)) {
+            List<Colindancia> colindancias = grafo.get(ciudadOrigen);
+
+            // Buscar la colindancia correspondiente a la ciudad de destino
+            for (Colindancia colindancia : colindancias) {
+                if (colindancia.getCiudadDestino().equals(ciudadDestino)) {
+                    // Modificar la distancia y el costo de la colindancia
+                    colindancia.setDistancia(nuevaDistancia);
+                    colindancia.setCosto(nuevoCosto);
+                    return;
+                }
+            }
+        }
+
+        // Si no se encontró la colindancia, mostrar un mensaje de error o tomar la acción necesaria
+        System.out.println("No se encontró una colindancia entre las ciudades especificadas.");
     }
 
     //Metodo obtener distancia que permite obteher la distancia entre dos ciudades en el grafo. 
@@ -190,6 +222,10 @@ public class Graph {
             this.ciudadDestino = ciudadDestino;
             this.distancia = distancia;
         }
+        
+        public Colindancia(Ciudad ciudadDestino) {
+            this.ciudadDestino = ciudadDestino;
+        }
 
         /**
          * Metodo para obetener distancia
@@ -216,6 +252,14 @@ public class Graph {
          */
         public int getCosto() {
             return costo;
+        }
+        
+        public void setDistancia(int distancia) {
+            this.distancia = distancia;
+        }
+        
+        public void setCosto(int costo) {
+            this.costo = costo;
         }
     }
 

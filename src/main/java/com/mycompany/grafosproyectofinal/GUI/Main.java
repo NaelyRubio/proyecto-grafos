@@ -69,8 +69,8 @@ public class Main {
         System.out.println("Se agrego la ciudad " + ciudades[indice].getNombre());
     }
     
-    private void agregarColindancia(int indiceUno, int indiceDos, int distancia) {
-        grafo.agregarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia);
+    private void agregarColindancia(int indiceUno, int indiceDos) {
+        grafo.agregarColindancia(ciudades[indiceUno], ciudades[indiceDos]);
     }
     
     private List<Ciudad> calcularDistanciaMasCorta(int indiceUno, int indiceDos) {
@@ -80,11 +80,19 @@ public class Main {
     private List<Ciudad> calcularDistanciaMasBarata(int indiceUno, int indiceDos) {
         return grafo.calcularRutaMasBarataBellmanFord(ciudades[indiceUno], ciudades[indiceDos]);
     }
+    
+    private void registrarDistanciaYCostoDePasaje(int indiceUno, int indiceDos, int distancia, int costo) {
+        grafo.registrarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia, costo);
+    }
+    
+    private void modificarDistanciaYCostoDePasaje(int indiceUno, int indiceDos, int distancia, int costo) {
+        grafo.modificarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia, costo);
+    }
 
     private void mostrarMenuOpciones() {
         int opcion = 0;
         int opcionSeleccionada = 0;
-        int opcionUno = 0, opcionDos = 0;
+        int opcionUno = 0, opcionDos = 0, distancia = 0, costo = 0;
         
         do {
             System.out.println("*---------------------------------------------------------------------*");
@@ -117,14 +125,34 @@ public class Main {
                     System.out.println("Ingrese el indice de la segunda ciudad:");
                     opcionDos = sc.nextInt();
                     System.out.println("Ingrese la distancia entre ciudad 1 y ciudad 2:");
-                    int distancia = sc.nextInt();
-                    agregarColindancia(opcionUno, opcionDos, distancia);
+                    distancia = sc.nextInt();
+                    agregarColindancia(opcionUno, opcionDos);
                     break;
                 case 3:
                     System.out.println("3) Registrar distancia y costo de pasaje entre dos ciudades colindantes");
+                    mostrarTablaCiudades();
+                    System.out.println("Ingrese el indice de la primera ciudad:");
+                    opcionUno = sc.nextInt() - 1;
+                    System.out.println("Ingrese el indice de la segunda ciudad:");
+                    opcionDos = sc.nextInt();
+                    System.out.println("Ingrese la distancia entre ciudad 1 y ciudad 2:");
+                    distancia = sc.nextInt();
+                    System.out.println("Ingrese el costo del pasaje:");
+                    costo = sc.nextInt();
+                    registrarDistanciaYCostoDePasaje(opcionUno, opcionDos, distancia, costo);
                     break;
                 case 4:
                     System.out.println("4) Modificar distancia y costo de pasaje entre dos ciudades colindantes");
+                    mostrarTablaCiudades();
+                    System.out.println("Ingrese el indice de la primera ciudad:");
+                    opcionUno = sc.nextInt() - 1;
+                    System.out.println("Ingrese el indice de la segunda ciudad:");
+                    opcionDos = sc.nextInt();
+                    System.out.println("Ingrese la distancia entre ciudad 1 y ciudad 2:");
+                    distancia = sc.nextInt();
+                    System.out.println("Ingrese el costo del pasaje:");
+                    costo = sc.nextInt();
+                    registrarDistanciaYCostoDePasaje(opcionUno, opcionDos, distancia, costo);
                     break;
                 case 5:
                     System.out.println("5) Consultar ruta mas corta entre dos ciudades");
