@@ -6,8 +6,7 @@ package com.mycompany.grafosproyectofinal.GUI;
 
 import com.mycompany.grafosproyectofinal.Graph;
 import com.mycompany.grafosproyectofinal.folder.Ciudad;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -78,7 +77,6 @@ public class Main {
     }
 
     private static void mostrarTablaCiudades() {
-
         ciudades[0] = obregon;
         ciudades[1] = guaymas;
         ciudades[2] = empalme;
@@ -97,19 +95,29 @@ public class Main {
 
         for (int i = 0; i < ciudades.length; i++) {
             System.out.println((i + 1) + " | " + ciudades[i].getNombre());
+            System.out.println("*----------------------------------*");
         }
-
+    }
+    
+    private void mostrarTablaColindancias() {
+        grafo.c
     }
 
     private void agregarCiudad(int indice) {
         grafo.agregarCiudad(ciudades[indice]);
-        System.out.println("Se agrego la ciudad " + ciudades[i].getNombre());
+        System.out.println("Se agrego la ciudad " + ciudades[indice].getNombre());
+    }
+    
+    private void agregarColindancia(int indiceUno, int indiceDos, int distancia) {
+        grafo.agregarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia);
     }
 
     private void mostrarMenuOpciones() {
         int opcion = 0;
         int opcionSeleccionada = 0;
+        
         do {
+            System.out.println("*---------------------------------------------------------------------*");
             System.out.println("Bienvenidos al sistema.");
             System.out.println("Elija su opcion.");
             System.out.println("1) Agregar una ciudad");
@@ -119,23 +127,28 @@ public class Main {
             System.out.println("5) Consultar ruta mas corta entre dos ciudades");
             System.out.println("6) Consultar ruta mas barata entre dos ciudades");
             System.out.println("7) Salir del sistema");
+            System.out.println("*---------------------------------------------------------------------*");
             opcionSeleccionada = sc.nextInt();
 
             switch (opcionSeleccionada) {
-
                 case 1:
                     System.out.println("Agregar una ciudad");
                     System.out.println("Ciudades en lista");
                     mostrarTablaCiudades();
                     System.out.println("Introduzca el numero de una ciudad");
-                    int ciudadEscogida = sc.nextInt() - 1;
-                    agregarCiudad(ciudadEscogida);
-                    System.out.println("Se a agregado con exito la ciudad");
-                    
+                    opcionSeleccionada = sc.nextInt() - 1;
+                    agregarCiudad(opcionSeleccionada);
                     break;
                 case 2:
                     System.out.println("Registrar una colindancia entre dos ciudades");
-                    
+                    mostrarTablaCiudades();
+                    System.out.println("Ingrese el indice de la primera ciudad:");
+                    int opcionUno = sc.nextInt() - 1;
+                    System.out.println("Ingrese el indice de la segunda ciudad:");
+                    int opcionDos = sc.nextInt();
+                    System.out.println("Ingrese la distancia entre ciudad 1 y ciudad 2:");
+                    int distancia = sc.nextInt();
+                    agregarColindancia(opcionUno, opcionDos, distancia);
                     break;
                 case 3:
                     System.out.println("Registrar distancia y costo de pasaje entre dos ciudades colindantes");
@@ -152,6 +165,12 @@ public class Main {
                     System.out.println("Consultar ruta mas barata entre dos ciudades");
                     break;
                 case 7:
+                    System.out.println("Mostrar tabla de ciudades");
+                    break;
+                case 8:
+                    System.out.println("Mostrar tabla de colindancias");
+                    break;
+                case 9:
                     System.out.println("Salir del sistema");
                     opcion++;
                     break;
