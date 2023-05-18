@@ -8,11 +8,12 @@ import java.util.Map;
 
 /**
  * Clase que representa un grafo que costa de ciudades y sus cardinalidades.
- * @author Guimel Naely Rubio Morillon - 229324 
+ *
+ * @author Guimel Naely Rubio Morillon - 229324
  */
 public class Graph {
 
-   //Mapa que mapea instancias de la clase ciudad a las listas de colindancias
+    //Mapa que mapea instancias de la clase ciudad a las listas de colindancias
     private Map<Ciudad, List<Colindancia>> grafo;
 
     //Constructor graph que inicializa el mapa grafo como una nueva instancoa HashMap
@@ -26,9 +27,9 @@ public class Graph {
     }
 
     //Mwrodo agregar colindancia que permite agregar una colindancia entre dos ciudades existenres el grafo
-    public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia, int costo) {
+    public void agregarColindancia(Ciudad ciudadOrigen, Ciudad ciudadDestino, int distancia) {
         List<Colindancia> colindancias = grafo.getOrDefault(ciudadOrigen, new ArrayList<>());
-        colindancias.add(new Colindancia(ciudadDestino, distancia, costo));
+        colindancias.add(new Colindancia(ciudadDestino, distancia));
         grafo.put(ciudadOrigen, colindancias);
     }
 
@@ -66,10 +67,14 @@ public class Graph {
                 if (colindancias != null) {
                     for (Colindancia colindancia : colindancias) {
                         ciudadDestino = colindancia.getCiudadDestino();
-                        int distanciaNueva = distancias.get(ciudad) + colindancia.getDistancia();
-                        if (distanciaNueva < distancias.get(ciudadDestino)) {
-                            distancias.put(ciudadDestino, distanciaNueva);
-                            rutasPrevias.put(ciudadDestino, ciudad);
+                        Integer distance = distancias.get(ciudad);
+                        Integer destinationDistance = distancias.get(ciudadDestino);
+                        if (distance != null && destinationDistance != null) {
+                            int distanciaNueva = distance.intValue() + colindancia.getDistancia();
+                            if (distanciaNueva < destinationDistance.intValue()) {
+                                distancias.put(ciudadDestino, distanciaNueva);
+                                rutasPrevias.put(ciudadDestino, ciudad);
+                            }
                         }
                     }
                 }
@@ -83,9 +88,13 @@ public class Graph {
             if (colindancias != null) {
                 for (Colindancia colindancia : colindancias) {
                     ciudadDestino = colindancia.getCiudadDestino();
-                    int distanciaNueva = distancias.get(ciudad) + colindancia.getDistancia();
-                    if (distanciaNueva < distancias.get(ciudadDestino)) {
-                        throw new RuntimeException("El grafo contiene un ciclo negativo.");
+                    Integer distance = distancias.get(ciudad);
+                    Integer destinationDistance = distancias.get(ciudadDestino);
+                    if (distance != null && destinationDistance != null) {
+                        int distanciaNueva = distance.intValue() + colindancia.getDistancia();
+                        if (distanciaNueva < destinationDistance.intValue()) {
+                            throw new RuntimeException("El grafo contiene un ciclo negativo.");
+                        }
                     }
                 }
             }
@@ -129,11 +138,16 @@ public class Graph {
             this.distancia = distancia;
             this.costo = costo;
         }
+        
+        public Colindancia(Ciudad ciudadDestino, int distancia) {
+            this.ciudadDestino = ciudadDestino;
+            this.distancia = distancia;
+        }
 
-      
         /**
          * Metodo para obetener distancia
-         * @return  ciudadDestino
+         *
+         * @return ciudadDestino
          */
         public Ciudad getCiudadDestino() {
             return ciudadDestino;
@@ -141,6 +155,7 @@ public class Graph {
 
         /**
          * Metodo para obtener distancia
+         *
          * @return disancia
          */
         public int getDistancia() {
@@ -149,6 +164,7 @@ public class Graph {
 
         /**
          * metodo para obtener el costo
+         *
          * @return costo
          */
         public int getCosto() {
