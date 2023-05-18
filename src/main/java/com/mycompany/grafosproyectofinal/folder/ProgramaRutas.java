@@ -12,6 +12,10 @@ import java.util.*;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 
+/**
+ * 
+ * @author naely
+ */
 public class ProgramaRutas {
 
     //Clase interna ciudad. 
@@ -48,6 +52,7 @@ class Colindancia {
     int distancia;
     int cuotaPeaje;
 
+    
     /*
     * Constructor que recibe parametros de tipo ciudad, dostancia, cuotapeaje
     *

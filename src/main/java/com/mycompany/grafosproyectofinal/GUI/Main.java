@@ -68,11 +68,12 @@ public class Main {
         grafo.agregarCiudad(ciudades[indice]);
         System.out.println("Se agrego la ciudad " + ciudades[indice].getNombre());
     }
+
     
     private void agregarColindancia(int indiceUno, int indiceDos, int distancia) {
         grafo.agregarColindancia(ciudades[indiceUno], ciudades[indiceDos], distancia);
     }
-    
+
     private List<Ciudad> calcularDistanciaMasCorta(int indiceUno, int indiceDos) {
         return grafo.calcularRutaMasCortaBellmanFord(ciudades[indiceUno], ciudades[indiceDos]);
     }
@@ -85,11 +86,10 @@ public class Main {
         int opcion = 0;
         int opcionSeleccionada = 0;
         int opcionUno = 0, opcionDos = 0;
-        
+
         do {
             System.out.println("*---------------------------------------------------------------------*");
             System.out.println("Bienvenidos al sistema.");
-            System.out.println("Elija su opcion.");
             System.out.println("1) Agregar una ciudad");
             System.out.println("2) Registrar una colindancia entre dos ciudades");
             System.out.println("3) Registrar distancia y costo de pasaje entre dos ciudades colindantes");
@@ -97,6 +97,7 @@ public class Main {
             System.out.println("5) Consultar ruta mas corta entre dos ciudades");
             System.out.println("6) Consultar ruta mas barata entre dos ciudades");
             System.out.println("7) Salir del sistema");
+            System.out.println("Ingrese su opcion");
             System.out.println("*---------------------------------------------------------------------*");
             opcionSeleccionada = sc.nextInt();
 
@@ -136,6 +137,7 @@ public class Main {
                     for (Ciudad ciudad : rutaMasCorta) {
                         System.out.println(ciudad.getNombre());
                     }
+            
                     break;
                 case 6:
                     System.out.println("6) Consultar ruta mas barata entre dos ciudades");
