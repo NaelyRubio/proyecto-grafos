@@ -6,7 +6,7 @@ package com.mycompany.grafosproyectofinal.folder;
 
 /**
  *
- * @author naely
+ * @author Guimel Naely Rubio Morillon - 229324
  */
 import java.util.*;
 import javax.annotation.processing.SupportedSourceVersion;

@@ -4,6 +4,9 @@
  */
 package com.mycompany.grafosproyectofinal.folder;
 
+/**
+ * @author Guimel Naely Rubio Morillon - 229324
+ */
 public class Colindancia {
     
     //Atributos privados de la clase.

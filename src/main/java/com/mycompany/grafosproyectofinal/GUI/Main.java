@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
- * @author naely
+ * @author Guimel Naely Rubio Morillon - 229324
  */
 public class Main {
 
